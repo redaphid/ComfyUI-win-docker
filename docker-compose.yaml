@@ -7,7 +7,24 @@ services:
     ports:
       - 8188:8188
     volumes:
-      - 'D:\comfy\models:C:\app\ComfyUI\models'
-      - 'D:\comfy\custom_nodes:C:\app\ComfyUI\custom_nodes'
+      - '${COMFY_MODELS_DIR}:C:\app\ComfyUI\models'
+      - '${COMFY_CUSTOM_NODES_DIR}:C:\app\ComfyUI\custom_nodes'
+      - '${COMFY_OUTPUT_DIR}:C:\app\ComfyUI\output'
     devices:
       - class/5B45201D-F2F2-4F3B-85BB-30FF1F953599     # Passing GPU, Dont Change. Delete this block if you dont want to use GPU
+
+  ComfyUI2:
+    container_name: ComfyUI2
+    image: comfy-ui-custom:latest
+    isolation: process
+    restart: unless-stopped
+    ports:
+      - ${COMFY2_PORT:-8189}:8188
+    volumes:
+      - '${COMFY2_MODELS_DIR}:C:\app\ComfyUI\models'
+      - '${COMFY2_CUSTOM_NODES_DIR}:C:\app\ComfyUI\custom_nodes'
+      - '${COMFY2_OUTPUT_DIR}:C:\app\ComfyUI\output'
+    devices:
+      - class/5B45201D-F2F2-4F3B-85BB-30FF1F953599     # Passing GPU, Dont Change. Delete this block if you dont want to use GPU
+    profiles:
+      - multi-instance  # Only starts with: docker-compose --profile multi-instance up -d

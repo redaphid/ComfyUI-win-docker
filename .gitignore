@@ -1,0 +1,6 @@
+# Environment configuration
+.env
+
+# Local directories
+models/
+.claude/
