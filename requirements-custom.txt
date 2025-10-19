@@ -20,9 +20,10 @@ gguf>=0.10.0
 # AI Tools
 anthropic>=0.39.0
 
-# Face restoration (commented out - causes build issues, install manually if needed)
-# insightface>=0.7.3
+# Face restoration
+# insightface>=0.7.3  # Commented out - requires Cython compilation, only needed for PuLID
 onnxruntime-gpu>=1.16.0
+lpips>=0.1.4  # Required by facerestore_cf
 
 # Video processing
 imageio-ffmpeg>=0.5.1
@@ -45,3 +46,24 @@ av>=11.0.0
 # Other commonly used packages
 pyyaml>=6.0.1
 matplotlib>=3.8.0
+
+# ComfyUI-Impact-Pack dependencies
+ultralytics>=8.0.0
+segment-anything>=1.0
+
+# 3D Pack additional dependencies
+trimesh>=4.0.0
+networkx>=3.0  # Often needed for 3D operations
+
+# AI Tools
+ollama>=0.1.0
+transformers>=4.30.0
+
+# Additional video and image processing
+ffmpeg-python>=0.2.0
+kornia>=0.7.0
+
+# Additional missing dependencies
+omegaconf>=2.3.0  # Required by comfyui-3d-pack
+groq>=0.4.0  # Required by ComfyUI-IF_AI_tools
+numexpr>=2.8.0  # Required by ComfyUI_FizzNodes
