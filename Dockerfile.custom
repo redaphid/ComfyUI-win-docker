@@ -1,0 +1,26 @@
+# Custom ComfyUI Docker image with all dependencies
+FROM eisai/comfy-ui:latest
+
+# Enable Windows Long Path support (fixes numpy installation error)
+RUN powershell -Command "New-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem' -Name 'LongPathsEnabled' -Value 1 -PropertyType DWORD -Force"
+
+# Install git using winget or chocolatey
+RUN powershell -Command " \
+    $ProgressPreference = 'SilentlyContinue'; \
+    Invoke-WebRequest -Uri 'https://github.com/git-for-windows/git/releases/download/v2.47.1.windows.1/MinGit-2.47.1-64-bit.zip' -OutFile 'C:\git.zip'; \
+    Expand-Archive -Path 'C:\git.zip' -DestinationPath 'C:\git' -Force; \
+    Remove-Item 'C:\git.zip' -Force"
+
+# Add git to PATH
+ENV PATH="C:\git\cmd;${PATH}"
+
+# Copy requirements file
+COPY requirements-custom.txt /app/requirements-custom.txt
+
+# Install Python dependencies
+# Using the embedded Python from ComfyUI portable
+RUN C:/app/python_embeded/python.exe -m pip install --upgrade pip && \
+    C:/app/python_embeded/python.exe -m pip install -r C:/app/requirements-custom.txt
+
+WORKDIR C:/app
+ENTRYPOINT ["entry.bat"]
